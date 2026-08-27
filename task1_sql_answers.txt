@@ -1,0 +1,299 @@
+WEEK 20 PROJECT - TASK 1
+DATA GATHERING AND COMBINATION
+
+QUESTION 1:
+How much is each member borrowing?
+
+SQL:
+SELECT
+    m.member_id,
+    m.first_name,
+    m.last_name,
+    COUNT(c.checkout_id) AS checkout_count
+FROM members AS m
+LEFT JOIN checkouts AS c
+    ON m.member_id = c.member_id
+GROUP BY
+    m.member_id,
+    m.first_name,
+    m.last_name
+ORDER BY m.member_id;
+
+WHY / WHAT THE CODE DOES:
+
+This query shows how many books each member has borrowed.
+
+It joins the members table with the checkouts table using member_id. COUNT(checkout_id) counts the checkouts for each member.
+
+LEFT JOIN is used so members who have not borrowed any books are still included. Their checkout count will be 0.
+
+The results are grouped by member and ordered by member ID.
+
+OUTPUT / RESULT:
+
+The query returned 80 members.
+
+ member_id first_name last_name  checkout_count
+      1001      Salma   Ibrahim               1
+      1002      Fares     Saleh               2
+      1003     Bassel    Hegazy               9
+      1004      Fares     Wahba               0
+      1005    Youssef     Halim               3
+      1006      Layla   Mansour               1
+      1007     Sherif     Fouad               3
+      1008       Ziad     Saleh              19
+      1009     Hassan     Saleh               1
+      1010       Nour     Nabil              18
+      1011      Menna     Halim               2
+      1012        Ali    Hegazy               0
+      1013       Ziad     Fouad               2
+      1014     Habiba     Nabil               1
+      1015      Hamza     Sabry               3
+      1016       Dina    Rashad               7
+      1017       Adam      Badr               2
+      1018      Ahmed    Shafik              17
+      1019    Mostafa     Wahba               3
+      1020       Rana     Fouad               7
+      1021      Fares     Fouad               0
+      1022    Youssef     Fouad               6
+      1023     Hassan    Rashad               1
+      1024    Youssef    Hegazy              17
+      1025       Hana     Nabil               0
+      1026       Nada     Saleh               3
+      1027    Mostafa     Fouad              18
+      1028     Hassan      Adel               3
+      1029       Rana     Kamel               0
+      1030       Reem     Osman              16
+      1031        Ali     Fahmy               1
+      1032       Nada      Zaki               6
+      1033     Marwan     Wahba               0
+      1034        Aya     Wahba              25
+      1035      Karim     Fahmy               1
+      1036       Lina      Zaki               1
+      1037      Retaj     Kamel               2
+      1038        Mai   Mansour               0
+      1039       Nada      Riad               2
+      1040       Dina      Adel               2
+      1041       Nada    Rashad               2
+      1042      Fares     Fahmy               0
+      1043       Rana     Halim               0
+      1044     Sherif     Saleh              21
+      1045     Sherif     Fahmy               0
+      1046       Amir     Fouad               1
+      1047       Sara    Rashad              16
+      1048    Youssef     Kamel               0
+      1049      Ahmed     Gamal               1
+      1050      Fares      Adel              11
+      1051      Karim    Rashad               0
+      1052      Retaj      Adel               1
+      1053       Adam    Shafik               5
+      1054      Retaj     Fahmy               6
+      1055    Mostafa     Kamel               2
+      1056     Farida     Osman               0
+      1057      Ahmed     Fahmy              10
+      1058       Lina   Mansour               3
+      1059       Lina     Halim               7
+      1060      Layla     Wahba               2
+      1061       Ziad     Fahmy               8
+      1062      Tarek      Adel               7
+      1063      Layla     Fouad               0
+      1064      Fares     Sabry               0
+      1065       Adam     Fahmy              17
+      1066       Amir     Wahba               0
+      1067        Aya   Ibrahim               3
+      1068      Layla    Hegazy               6
+      1069     Bassel      Adel               0
+      1070      Ahmed      Zaki               3
+      1071       Jana    Hegazy               2
+      1072       Seif      Zaki              14
+      1073     Yassin     Kamel               2
+      1074    Mostafa     Saleh               2
+      1075      Malak     Fahmy               9
+      1076       Dina     Wahba               7
+      1077       Lina    Rashad               6
+      1078     Habiba     Osman               0
+      1079       Rana     Osman              10
+      1080     Bassel     Wahba               2
+
+==================================================
+QUESTION 2:
+Which books match a chosen author pattern?
+
+
+Chosen pattern: Author starts with A.
+
+SQL:
+
+SELECT
+book_id,
+title,
+author
+FROM books
+WHERE author LIKE 'A%'
+ORDER BY author, title;
+
+WHY / WHAT THE CODE DOES:
+
+This query finds books written by authors whose names start with the letter A.
+
+LIKE 'A%' means that the author's name starts with A.
+
+The query returns the book ID, title, and author.
+
+The results are ordered by author name and then title.
+
+OUTPUT / RESULT:
+
+The query returned 6 books.
+
+ book_id               title        author
+     504 Rooftop Astronomers  Adel Roushdy
+     503   The Lantern Maker  Adel Roushdy
+     502      Desert Compass Amina Darwish
+     501     The Silver Kite Amina Darwish
+     505 Letters to the Nile     Aya Hafez
+     506 The Paper Boat Club     Aya Hafez
+
+==================================================
+QUESTION 3:
+What are the most popular books?
+
+
+SQL:
+
+SELECT
+b.book_id,
+b.title,
+COUNT(c.checkout_id) AS checkout_count
+FROM books AS b
+JOIN checkouts AS c
+ON b.book_id = c.book_id
+GROUP BY
+b.book_id,
+b.title
+ORDER BY checkout_count DESC
+LIMIT 5;
+
+WHY / WHAT THE CODE DOES:
+
+This query finds the books with the highest number of checkouts.
+
+It joins books with checkouts using book_id and counts the checkouts for each book.
+
+The results are sorted from the highest count to the lowest. LIMIT 5 keeps only the five most borrowed books.
+
+OUTPUT / RESULT:
+
+ book_id                  title  checkout_count
+     501        The Silver Kite              57
+     507  Fossils and Fireflies              55
+     513 Circuits for Beginners              46
+     519       Kites Over Cairo              38
+     525   Storms and Sailboats              25
+
+==================================================
+QUESTION 4:
+Who are the most active readers?
+
+
+SQL:
+
+SELECT
+m.member_id,
+m.first_name,
+m.last_name,
+COUNT(c.checkout_id) AS checkout_count
+FROM members AS m
+JOIN checkouts AS c
+ON m.member_id = c.member_id
+GROUP BY
+m.member_id,
+m.first_name,
+m.last_name
+ORDER BY checkout_count DESC
+LIMIT 10;
+
+WHY / WHAT THE CODE DOES:
+
+This query finds the members who have borrowed the most books.
+
+It joins members with checkouts using member_id. COUNT(checkout_id) counts how many books each member has borrowed.
+
+The results are sorted from highest to lowest and the top 10 are returned.
+
+OUTPUT / RESULT:
+
+ member_id first_name last_name  checkout_count
+      1034        Aya     Wahba              25
+      1044     Sherif     Saleh              21
+      1008       Ziad     Saleh              19
+      1010       Nour     Nabil              18
+      1027    Mostafa     Fouad              18
+      1018      Ahmed    Shafik              17
+      1024    Youssef    Hegazy              17
+      1065       Adam     Fahmy              17
+      1030       Reem     Osman              16
+      1047       Sara    Rashad              16
+
+==================================================
+QUESTION 5:
+What does a neighborhood's activity look like further back in time?
+
+
+Chosen neighborhood: Maadi.
+The latest 10 checkouts are skipped.
+
+SQL:
+
+SELECT
+m.member_id,
+m.first_name,
+m.last_name,
+m.neighborhood,
+c.checkout_id,
+c.book_id,
+c.checkout_date
+FROM members AS m
+JOIN checkouts AS c
+ON m.member_id = c.member_id
+WHERE LOWER(TRIM(m.neighborhood)) = 'maadi'
+ORDER BY c.checkout_date DESC, c.checkout_id DESC
+LIMIT 10 OFFSET 10;
+
+WHY / WHAT THE CODE DOES:
+
+This query looks at checkout activity for members from the Maadi neighborhood.
+
+It joins checkouts with members using member_id so the neighborhood can be used.
+
+The checkouts are sorted from newest to oldest. OFFSET 10 skips the 10 most recent checkouts.
+
+checkout_id is also used in the ORDER BY so records with the same date have a fixed order.
+
+OUTPUT / RESULT:
+
+The query returned 10 records.
+
+ member_id first_name last_name neighborhood  checkout_id  book_id checkout_date
+      1011      Menna     Halim        Maadi         9083      516    2025-10-02
+      1003     Bassel    Hegazy        Maadi         9088      519    2025-09-17
+      1010       Nour     Nabil       Maadi          9049      514    2025-09-08
+      1003     Bassel    Hegazy        Maadi         9103      513    2025-09-04
+      1010       Nour     Nabil       Maadi          9015      507    2025-09-02
+      1010       Nour     Nabil       Maadi          9100      513    2025-08-27
+      1017       Adam      Badr        Maadi         9081      502    2025-08-25
+      1008       Ziad     Saleh        Maadi         9001      501    2025-08-23
+      1003     Bassel    Hegazy        Maadi         9050      521    2025-08-21
+      1018      Ahmed    Shafik        Maadi         9085      525    2025-08-19
+
+==================================================
+WEB PAGE VS DATABASE
+==================================================
+
+A database stores data in a structured way, so we can use SQL to ask questions and get the records we need.
+
+The Reading Kickoff data is on an HTML web page. It is made for people to read, so the data is inside an HTML table and has to be extracted before we can use it.
+
+A database is already organized into tables and relationships, while a web page presents information for a person to read. This means the web page needs an extra step to turn the displayed table into data that Python can work with.
+
+This difference mattered in this project because the Reading Kickoff checkouts were on a web page instead of being stored in the library database. We needed to extract the table and make its columns match the other checkout data before combining the three sources.
