@@ -1,3 +1,5 @@
+356978c I Make the frist connection between github and my nootbook
+28c1dfb Add git log
 0c94c3a Task 2 Done,task2_cleaned_data.csv
 24ee32d Task 1 - Done, task1_combined_data.csv
 260f9df I Make the frist connection betwwen github and my nootbook
